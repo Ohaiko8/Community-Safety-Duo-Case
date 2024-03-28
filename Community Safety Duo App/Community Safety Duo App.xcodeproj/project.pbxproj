@@ -10,7 +10,6 @@
 		1130E7172BB5654D001B1FD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1130E7162BB5654D001B1FD8 /* Assets.xcassets */; };
 		1130E71A2BB5654D001B1FD8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1130E7192BB5654D001B1FD8 /* Preview Assets.xcassets */; };
 		1130E7212BB56586001B1FD8 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1130E7202BB56586001B1FD8 /* Map.swift */; };
-		1130E7232BB565B1001B1FD8 /* AiAdvisor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1130E7222BB565B1001B1FD8 /* AiAdvisor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,7 +17,6 @@
 		1130E7162BB5654D001B1FD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1130E7192BB5654D001B1FD8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1130E7202BB56586001B1FD8 /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		1130E7222BB565B1001B1FD8 /* AiAdvisor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AiAdvisor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +49,6 @@
 		1130E7112BB5654C001B1FD8 /* Community Safety Duo App */ = {
 			isa = PBXGroup;
 			children = (
-				1130E7222BB565B1001B1FD8 /* AiAdvisor.swift */,
 				1130E7202BB56586001B1FD8 /* Map.swift */,
 				1130E7162BB5654D001B1FD8 /* Assets.xcassets */,
 				1130E7182BB5654D001B1FD8 /* Preview Content */,
@@ -138,7 +135,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1130E7232BB565B1001B1FD8 /* AiAdvisor.swift in Sources */,
 				1130E7212BB56586001B1FD8 /* Map.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,12 +270,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Community Safety Duo App/Preview Content\"";
-				DEVELOPMENT_TEAM = RCTK93B467;
+				DEVELOPMENT_TEAM = 4XW83F32HZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location is used for navigating in the safest way possible.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location is used for navigating in the safest way possible.";
+				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "Location is used for navigating in the safest way possible.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Location is used for navigating in the safest way possible.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location is used for navigating in the safest way possible.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = Map.swift;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -305,12 +307,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Community Safety Duo App/Preview Content\"";
-				DEVELOPMENT_TEAM = RCTK93B467;
+				DEVELOPMENT_TEAM = 4XW83F32HZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location is used for navigating in the safest way possible.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location is used for navigating in the safest way possible.";
+				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "Location is used for navigating in the safest way possible.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Location is used for navigating in the safest way possible.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location is used for navigating in the safest way possible.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = Map.swift;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
