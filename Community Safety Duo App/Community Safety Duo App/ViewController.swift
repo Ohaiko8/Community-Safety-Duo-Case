@@ -50,7 +50,7 @@ struct SOSButton: View {
                     .foregroundColor(Color(UIColor(red: 1, green: 0.388, blue: 0.278, alpha: 1)))
                     .font(.system(size: 20).bold())
                     .padding(30)                     .background(Color.white)  .clipShape(Circle())
-                    .padding(.bottom, -16)  }
+                    .padding(.bottom, 0)  }
         }
         .buttonStyle(PlainButtonStyle())
     }
@@ -61,6 +61,6 @@ struct RedCircle: View {
         Circle()
             .fill(Color(UIColor(red: 1, green: 0.388, blue: 0.278, alpha: 1)))
             .frame(width: 120, height: 120)
-            .padding(.bottom, -34) 
+            .padding(.bottom, -18) 
     }
 }
