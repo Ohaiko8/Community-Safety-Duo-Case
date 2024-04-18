@@ -64,3 +64,4 @@ struct RedCircle: View {
             .padding(.bottom, -18) 
     }
 }
+
