@@ -159,6 +159,7 @@ struct AddContactForm: View {
         .background(Color.white)
         .cornerRadius(16)
         .shadow(radius: 5)
+    
     }
     
     func addContact() {

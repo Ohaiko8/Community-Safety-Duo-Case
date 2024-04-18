@@ -10,6 +10,7 @@
 		1130E7172BB5654D001B1FD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1130E7162BB5654D001B1FD8 /* Assets.xcassets */; };
 		1130E71A2BB5654D001B1FD8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1130E7192BB5654D001B1FD8 /* Preview Assets.xcassets */; };
 		34350EA82BD17E8200B3492D /* AIview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34350EA72BD17E8200B3492D /* AIview.swift */; };
+		34350EAA2BD19F3900B3492D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34350EA92BD19F3900B3492D /* SettingsView.swift */; };
 		34782B3E2BCFE0C8001609B2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34782B3D2BCFE0C8001609B2 /* HomeView.swift */; };
 		34782B402BCFE0D8001609B2 /* SOSview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34782B3F2BCFE0D8001609B2 /* SOSview.swift */; };
 		34782B422BCFE0EC001609B2 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34782B412BCFE0EC001609B2 /* FriendsView.swift */; };
@@ -21,6 +22,7 @@
 		1130E7162BB5654D001B1FD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1130E7192BB5654D001B1FD8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		34350EA72BD17E8200B3492D /* AIview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIview.swift; sourceTree = "<group>"; };
+		34350EA92BD19F3900B3492D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		34782B3C2BCFE0C7001609B2 /* Community Safety Duo App-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Community Safety Duo App-Bridging-Header.h"; sourceTree = "<group>"; };
 		34782B3D2BCFE0C8001609B2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		34782B3F2BCFE0D8001609B2 /* SOSview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOSview.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 				34782B3D2BCFE0C8001609B2 /* HomeView.swift */,
 				34782B412BCFE0EC001609B2 /* FriendsView.swift */,
 				34350EA72BD17E8200B3492D /* AIview.swift */,
+				34350EA92BD19F3900B3492D /* SettingsView.swift */,
 				34782B3F2BCFE0D8001609B2 /* SOSview.swift */,
 				34782B432BCFE144001609B2 /* ViewController.swift */,
 				1130E7162BB5654D001B1FD8 /* Assets.xcassets */,
@@ -152,6 +155,7 @@
 				34350EA82BD17E8200B3492D /* AIview.swift in Sources */,
 				34782B422BCFE0EC001609B2 /* FriendsView.swift in Sources */,
 				34782B402BCFE0D8001609B2 /* SOSview.swift in Sources */,
+				34350EAA2BD19F3900B3492D /* SettingsView.swift in Sources */,
 				34782B442BCFE144001609B2 /* ViewController.swift in Sources */,
 				34782B3E2BCFE0C8001609B2 /* HomeView.swift in Sources */,
 			);

@@ -3,13 +3,12 @@ import SwiftUI
 struct HomeView: View {
     let safeCompanionMessages = [
         "Remember, you can always press the SOS button if you're in trouble.",
-        "Did you know you can activate Auto SOS by allowing AI access to your microphone?",
-        "I'll be here to help you navigate any emergency situation.",
-        "Did you know you can escape an uncomfortable situation with a fake call? Just one tap away!",
+        "Did you know you can activate Auto SOS by allowing AI access to your microphone in Settings?",
+        "You can escape an uncomfortable situation with a fake call.",
         "Don't worry, I've got your back. Let's stay safe together!",
         "You're not alone. I'm here to support you through any situation.",
         "Taking precautions is smart. I'm proud of you for using Compi!",
-        "If you ever feel unsafe, just know that help is just a click away."
+        "If you ever feel unsafe, just know that help is just a tap away."
     ]
     
     @State private var currentMessageIndex = 0
