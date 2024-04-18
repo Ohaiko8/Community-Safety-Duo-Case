@@ -110,3 +110,4 @@ struct SettingsButton: View {
         .buttonStyle(PlainButtonStyle())
     }
 }
+
