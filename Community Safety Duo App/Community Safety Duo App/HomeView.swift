@@ -53,13 +53,46 @@ struct HomeView: View {
         .padding()
         
         .onAppear {
-            
+            addUserToDatabase()
                     }
                     .onChange(of: speechDetector.dangerDetected) { detected in
                         showAIView = detected
                     }
     }
 }
+
+private func addUserToDatabase() {
+        guard let url = URL(string: "https://your-backend-url.com/users") else { return }
+        let profilePicture = UIImage(named: "p1.jpeg")?.jpegData(compressionQuality: 0.5)
+        let base64Picture = profilePicture?.base64EncodedString() ?? ""
+        
+        let user = User(name: "John Smith", phone: "+31612345678", trustedIds: [2, 3, 4], profilePicture: base64Picture)
+        
+        guard let encodedUser = try? JSONEncoder().encode(user) else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = encodedUser
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Failed to add user: \(error)")
+                return
+            }
+            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                print("Response: \(responseString)")
+            }
+        }.resume()
+    }
+
+struct User: Codable {
+    var name: String
+    var phone: String
+    var trustedIds: [Int]
+    var profilePicture: String
+}
+
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
@@ -238,10 +271,10 @@ struct BubbleView: View {
 
 
 @main
-struct YourAppNameApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ViewController()
+struct AppName: App {
+        var body: some Scene {
+            WindowGroup {
+                ViewController()
+            }
         }
-    }
 }

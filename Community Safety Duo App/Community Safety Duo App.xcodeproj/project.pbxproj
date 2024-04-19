@@ -12,6 +12,8 @@
 		11337B572BD1A79F00CB8D95 /* SpeechDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11337B562BD1A79F00CB8D95 /* SpeechDetector.swift */; };
 		11337B5A2BD1A7C300CB8D95 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11337B592BD1A7C300CB8D95 /* Speech.framework */; };
 		11337B5D2BD1A8EC00CB8D95 /* siren.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 11337B5C2BD1A8EC00CB8D95 /* siren.mp3 */; };
+		114BF1322BD2F11100CCDFD7 /* app.js in Sources */ = {isa = PBXBuildFile; fileRef = 114BF1312BD2F11100CCDFD7 /* app.js */; };
+		114BF1342BD2FA5E00CCDFD7 /* p1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 114BF1332BD2FA5E00CCDFD7 /* p1.jpeg */; };
 		34350EA82BD17E8200B3492D /* AIview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34350EA72BD17E8200B3492D /* AIview.swift */; };
 		34350EAC2BD1EBBD00B3492D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34350EAB2BD1EBBD00B3492D /* SettingsView.swift */; };
 		34782B3E2BCFE0C8001609B2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34782B3D2BCFE0C8001609B2 /* HomeView.swift */; };
@@ -28,6 +30,8 @@
 		11337B592BD1A7C300CB8D95 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		11337B5B2BD1A84900CB8D95 /* Community-Safety-Duo-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Community-Safety-Duo-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		11337B5C2BD1A8EC00CB8D95 /* siren.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = siren.mp3; sourceTree = "<group>"; };
+		114BF1312BD2F11100CCDFD7 /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = app.js; sourceTree = "<group>"; };
+		114BF1332BD2FA5E00CCDFD7 /* p1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = p1.jpeg; sourceTree = "<group>"; };
 		34350EA72BD17E8200B3492D /* AIview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIview.swift; sourceTree = "<group>"; };
 		34350EAB2BD1EBBD00B3492D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		34782B3D2BCFE0C8001609B2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -69,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				11337B5B2BD1A84900CB8D95 /* Community-Safety-Duo-App-Info.plist */,
+				114BF1312BD2F11100CCDFD7 /* app.js */,
 				11337B562BD1A79F00CB8D95 /* SpeechDetector.swift */,
 				34350EAB2BD1EBBD00B3492D /* SettingsView.swift */,
 				34782B3D2BCFE0C8001609B2 /* HomeView.swift */,
@@ -78,6 +83,7 @@
 				34782B432BCFE144001609B2 /* ViewController.swift */,
 				1130E7162BB5654D001B1FD8 /* Assets.xcassets */,
 				11337B5C2BD1A8EC00CB8D95 /* siren.mp3 */,
+				114BF1332BD2FA5E00CCDFD7 /* p1.jpeg */,
 				1130E7182BB5654D001B1FD8 /* Preview Content */,
 			);
 			path = "Community Safety Duo App";
@@ -115,6 +121,8 @@
 			dependencies = (
 			);
 			name = "Community Safety Duo App";
+			packageProductDependencies = (
+			);
 			productName = "Community Safety Duo App";
 			productReference = 1130E70F2BB5654C001B1FD8 /* Community Safety Duo App.app */;
 			productType = "com.apple.product-type.application";
@@ -144,6 +152,10 @@
 				Base,
 			);
 			mainGroup = 1130E7062BB5654C001B1FD8;
+			packageReferences = (
+				114BF11F2BD2E42000CCDFD7 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				114BF1262BD2E77900CCDFD7 /* XCRemoteSwiftPackageReference "mongo-swift-driver" */,
+			);
 			productRefGroup = 1130E7102BB5654C001B1FD8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -158,6 +170,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				114BF1342BD2FA5E00CCDFD7 /* p1.jpeg in Resources */,
 				11337B5D2BD1A8EC00CB8D95 /* siren.mp3 in Resources */,
 				1130E71A2BB5654D001B1FD8 /* Preview Assets.xcassets in Resources */,
 				1130E7172BB5654D001B1FD8 /* Assets.xcassets in Resources */,
@@ -175,6 +188,7 @@
 				34350EA82BD17E8200B3492D /* AIview.swift in Sources */,
 				11337B572BD1A79F00CB8D95 /* SpeechDetector.swift in Sources */,
 				34782B422BCFE0EC001609B2 /* FriendsView.swift in Sources */,
+				114BF1322BD2F11100CCDFD7 /* app.js in Sources */,
 				34782B402BCFE0D8001609B2 /* SOSview.swift in Sources */,
 				34782B442BCFE144001609B2 /* ViewController.swift in Sources */,
 				34782B3E2BCFE0C8001609B2 /* HomeView.swift in Sources */,
@@ -406,6 +420,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		114BF11F2BD2E42000CCDFD7 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		114BF1262BD2E77900CCDFD7 /* XCRemoteSwiftPackageReference "mongo-swift-driver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mongodb/mongo-swift-driver";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 1130E7072BB5654C001B1FD8 /* Project object */;
 }
