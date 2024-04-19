@@ -13,12 +13,29 @@ struct FriendsView: View {
         VStack(alignment: .leading, spacing: 20) {
             HStack {
                 Text("Emergency Contacts")
-                    .font(.headline)
+                    .font(.title)
+                    .fontWeight(.bold)
                     .foregroundColor(.primary)
+                    .padding(.top, 30)
+                    .padding(.horizontal)
                 
                 Spacer()
+                
+                Button(action: {
+                    self.isAddingContact = true // Set isAddingContact to true to present the form
+                }) {
+                    HStack {
+                        Image(systemName: "plus")
+                        Text("Add Contact")
+                    }
+                    .padding()
+                    .background(Color.skyBlue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                }
+                .padding(.top, 30)
+                .padding(.trailing, 20)
             }
-            .padding(.horizontal, 20)
             
             Divider()
             
@@ -30,30 +47,11 @@ struct FriendsView: View {
                 }
                 .padding(.horizontal, 20)
             }
-            
-            Button(action: {
-                self.isAddingContact.toggle()
-            }) {
-                Text("Add Contact")
-                    .padding()
-                    .background(Color.skyBlue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            }
-            .padding(.horizontal)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.top, 20)
-            .sheet(isPresented: $isAddingContact, onDismiss: {
-                self.resetForm()
-            }) {
-                AddContactForm(isPresented: self.$isAddingContact, contacts: self.$contacts)
-            }
         }
         .padding(.top, 20)
-    }
-    
-    func resetForm() {
-        self.isAddingContact = false
+        .sheet(isPresented: $isAddingContact) { // Present the AddContactForm when isAddingContact is true
+            AddContactForm(isPresented: self.$isAddingContact, contacts: self.$contacts)
+        }
     }
 }
 
@@ -120,7 +118,9 @@ struct AddContactForm: View {
         VStack {
             HStack {
                 Text("Add Contact")
-                    .font(.headline)
+                    .font(.title)
+                    .fontWeight(.bold) // Make title bold
+                    .padding()
                 
                 Spacer()
                 
@@ -128,38 +128,56 @@ struct AddContactForm: View {
                     self.isPresented = false
                 }) {
                     Image(systemName: "xmark")
-                        .foregroundColor(.gray)
+                        .padding()
+                        .foregroundColor(.black)
                 }
             }
-            .padding()
+            
+            Text("Add a trusted friend/family as an emergency contact to notify about your SOS situation and share your location with.")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .padding(.horizontal)
             
             TextField("Name", text: $name)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal, 20)
+                .frame(maxWidth: .infinity) // Ensure both fields have the same width
+                .padding(.horizontal)
             
             TextField("Phone Number", text: $phoneNumber)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal, 20)
+                .frame(maxWidth: .infinity) // Ensure both fields have the same width
+                .padding(.horizontal)
             
-            Button(action: {
-                self.addContact()
-                self.isPresented = false
-            }) {
-                Text("Add Contact")
-                    .padding()
-                    .background(Color.skyBlue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                Button(action: {
+                    self.addContact()
+                    self.isPresented = false
+                }) {
+                    Text("Save Contact")
+                        .font(.headline)
+                        .padding()
+                        .background(Color.skyBlue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding(.trailing)
             }
-            .padding()
+            .padding(.bottom) // Adjusted padding to remove the shadow line
             
             Spacer()
         }
         .padding()
         .background(Color.white)
-        .cornerRadius(16)
-        .shadow(radius: 5)
-    
+        .cornerRadius(0)
+        .shadow(radius: 0)
+        
+        Image("companion2")
+            .resizable()
+            .scaledToFit()
     }
     
     func addContact() {

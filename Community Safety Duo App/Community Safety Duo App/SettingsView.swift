@@ -109,7 +109,6 @@ struct SettingsRow: View {
             Toggle("", isOn: $isToggled)
                 .padding(.trailing)
                 .onTapGesture {
-                    // Prevent propagation of tap events
                 }
                 .toggleStyle(SwitchToggleStyle(tint: .skyBlue))
         }
