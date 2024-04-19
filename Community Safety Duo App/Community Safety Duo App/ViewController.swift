@@ -103,7 +103,7 @@ struct SettingsButton: View {
         NavigationLink(destination: SettingsView()) {
             Image(systemName: "gearshape.fill")
                 .resizable()
-                .frame(width: 24, height: 24)
+                .frame(width: 32, height: 32)
                 .foregroundColor(.white)
                 .padding()
         }
