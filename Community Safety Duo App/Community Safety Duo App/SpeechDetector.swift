@@ -12,44 +12,56 @@ class SpeechDetector: ObservableObject {
     // Published property to notify the UI
     var isSirenPlaying = CurrentValueSubject<Bool, Never>(false)
     @Published var dangerDetected = false
+    @Published var lastDetectedPhrase = ""
     
     init() {
-        requestMicrophonePermission()  // Request permission on initialization
-    }
-    
-    private func setupAudioSession() {
-        do {
-            let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playAndRecord, mode: .default, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
-            try audioSession.setActive(true)
-            NotificationCenter.default.addObserver(self, selector: #selector(handleAudioSessionInterruption), name: AVAudioSession.interruptionNotification, object: audioSession)
-        } catch {
-            print("Audio Session setup failed: \(error)")
-        }
+        setupAudioSession()
     }
     
     func requestMicrophonePermission() {
-        switch AVAudioSession.sharedInstance().recordPermission {
-        case .undetermined:
-            AVAudioSession.sharedInstance().requestRecordPermission { granted in
+            AVAudioSession.sharedInstance().requestRecordPermission { [weak self] granted in
                 DispatchQueue.main.async {
                     if granted {
                         print("Permission granted")
-                        self.setupAudioSession()
+                        self?.startPeriodicRecognition()
                     } else {
                         print("Permission denied")
                     }
                 }
             }
-        case .denied:
-            print("Microphone access previously denied")
-        case .granted:
-            print("Microphone permission already granted")
-            setupAudioSession()
-        @unknown default:
-            fatalError("Unknown microphone permission state")
         }
-    }
+    
+    private func setupAudioSession() {
+            do {
+                let audioSession = AVAudioSession.sharedInstance()
+                try audioSession.setCategory(.playAndRecord, mode: .default, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
+                try audioSession.setActive(true)
+                NotificationCenter.default.addObserver(self, selector: #selector(handleAudioSessionInterruption), name: AVAudioSession.interruptionNotification, object: nil)
+                requestMicrophonePermission()
+            } catch {
+                print("Audio Session setup failed: \(error)")
+            }
+        }
+    
+    // Handle audio session interruptions
+    @objc private func handleAudioSessionInterruption(notification: Notification) {
+            guard let info = notification.userInfo,
+                  let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
+                  let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                return
+            }
+
+            if type == .began {
+                print("Audio session interruption began.")
+            } else if type == .ended {
+                if let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt,
+                   AVAudioSession.InterruptionOptions(rawValue: optionsValue).contains(.shouldResume) {
+                    // Restart the audio session after the interruption ends
+                    setupAudioSession()
+                    startPeriodicRecognition()
+                }
+            }
+        }
     
     func startPeriodicRecognition() {
         let timer = Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(startRecording), userInfo: nil, repeats: true)
@@ -81,29 +93,39 @@ class SpeechDetector: ObservableObject {
     }
 
     private func setupRecognitionTask() {
-        print("recognition started")
         recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest!) { [weak self] result, error in
-                    guard let self = self else { return }
-                    
-                    if let result = result {
-                        let words = result.bestTranscription.formattedString.lowercased()
-                        if self.checkForDangerousWords(in: words) {
-                            DispatchQueue.main.async {
-                                self.dangerDetected = true  // Trigger UI update
-                                self.playSirenSound()
-                            }
-                        }
-                    }
-                    
-                    if error != nil || result!.isFinal {
-                        self.cleanupAudioSession()
-                    }
+            guard let self = self else { return }
+
+            if let error = error {
+                print("Speech recognition error: \(error.localizedDescription)")
+                self.cleanupAudioSession()  // Clean up immediately on error
+                return
+            }
+
+            if let result = result, self.checkForDangerousWords(in: result.bestTranscription.formattedString.lowercased()) {
+                DispatchQueue.main.async {
+                    self.dangerDetected = true
+                    self.lastDetectedPhrase = result.bestTranscription.formattedString  // Store the detected phrase
+                    self.playSirenSound()
+                    self.recognitionRequest?.endAudio()  // Properly end audio processing
                 }
+                return  // Early return to avoid further processing
+            }
+
+            // Check if the recognition result is final
+            if result?.isFinal ?? false {
+                self.cleanupAudioSession()  // Clean up after the task completes
+            }
+        }
     }
+
+
+    
+    
     
     private func checkForDangerousWords(in transcript: String) -> Bool {
         let dangerousWords = [
-            "help", "help", "sos", "emergency", "stop", "don't hurt me", "I don't want to die", "leave me alone", "I'm scared",
+            "help", "sos", "emergency", "stop", "don't hurt me", "I don't want to die", "leave me alone", "I'm scared",
             "I'm hurt", "I can't breathe", "heart attack", "it hurts", "I feel sick",
             "robbery", "thief", "gun", "knife", "attack",
             "fire", "accident", "explosion", "earthquake", "flood",
@@ -113,10 +135,10 @@ class SpeechDetector: ObservableObject {
     }
     
     private func cleanupAudioSession() {
-        audioEngine.stop()
-        audioEngine.inputNode.removeTap(onBus: 0)
-        recognitionRequest = nil
+        audioPlayer?.stop()
         recognitionTask = nil
+        lastDetectedPhrase = ""
+        dangerDetected = false
         isSirenPlaying.send(false)  // Notify UI that siren stopped
     }
     
@@ -129,40 +151,19 @@ class SpeechDetector: ObservableObject {
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.prepareToPlay()
+            audioPlayer?.numberOfLoops = -1  // Loop indefinitely
             audioPlayer?.play()
             isSirenPlaying.send(true)  // Notify UI that siren is playing
         } catch {
             print("Could not load or play the siren sound file: \(error)")
         }
     }
+
     
     func stopSirenSound() {
-            audioPlayer?.stop()
-            isSirenPlaying.send(false)  // Notify that siren has stopped
-        }
-    
-    // Handle audio session interruptions
-    @objc private func handleAudioSessionInterruption(notification: Notification) {
-        guard let info = notification.userInfo,
-              let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
-              let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
-            return
-        }
-        
-        if type == .began {
-            // Audio session was interrupted
-            print("Audio session interruption began.")
-        } else if type == .ended {
-            guard let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt else {
-                return
-            }
-            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
-            if options.contains(.shouldResume) {
-                // Restart any tasks that were paused or not yet started while interrupted
-                try? AVAudioSession.sharedInstance().setActive(true)
-                startRecording()  // Resume recording
-            }
-        }
+            cleanupAudioSession()
+            startPeriodicRecognition()
     }
+    
 }
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SOSView: View {
-    @State private var timerCount = 5
+    @State private var timerCount = 10
     @State private var isSafe = false
     
     let timer = Timer.publish(every: 1, on: .main, in: .default).autoconnect()

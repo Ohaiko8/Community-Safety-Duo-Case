@@ -5,6 +5,7 @@ struct HomeView: View {
     @StateObject private var speechDetector = SpeechDetector() // Speech detection
         @State private var showAIView = false // Controls visibility of AIView
     
+    
     let safeCompanionMessages = [
         "Remember, you can always press the SOS button if you're in trouble.",
         "Did you know you can activate Auto SOS by allowing AI access to your microphone in Settings?",
@@ -46,11 +47,13 @@ struct HomeView: View {
                 .offset(x: 0, y: -120)
             }
             .padding(.top, -50)
+            NavigationLink(destination: AIView(isShowing: $showAIView, speechDetector: speechDetector, detectedPhrase: speechDetector.lastDetectedPhrase), isActive: $showAIView) {
+                    EmptyView()}
         }
         .padding()
         
         .onAppear {
-                        speechDetector.startPeriodicRecognition()
+            
                     }
                     .onChange(of: speechDetector.dangerDetected) { detected in
                         showAIView = detected
@@ -66,11 +69,10 @@ struct HomeView_Previews: PreviewProvider {
 
 struct AIView: View {
     @Binding var isShowing: Bool
-    @State private var timerCount = 5
-    @State private var isSafe = false
-    
-    let timer = Timer.publish(every: 1, on: .main, in: .default).autoconnect()
-    
+    @State private var timerCount = 10
+    var speechDetector: SpeechDetector
+    let detectedPhrase: String
+
     var body: some View {
         ZStack {
             Color.red.edgesIgnoringSafeArea(.all)
@@ -79,6 +81,11 @@ struct AIView: View {
                 Text("AI Detected")
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding()
+
+                Text("You said: \"\(detectedPhrase)\"")
+                    .font(.title3)
                     .foregroundColor(.white)
                     .padding()
 
@@ -96,6 +103,11 @@ struct AIView: View {
                         .background(Color.white.opacity(0.8))
                         .clipShape(Circle())
                         .padding(.top, 20)
+                        .onReceive(Timer.publish(every: 1, on: .main, in: .default).autoconnect()) { _ in
+                            if self.timerCount > 0 {
+                                self.timerCount -= 1
+                            }
+                        }
                 } else {
                     Circle()
                         .fill(Color.white.opacity(0.8))
@@ -120,9 +132,7 @@ struct AIView: View {
                 }
 
                 Button(action: {
-                    self.isSafe = true
-                    self.timer.upstream.connect().cancel() // Stop the timer immediately
-                    self.isShowing = false // Dismiss the view and cancel the alert
+                    isSafe()
                 }) {
                     Text("I am safe")
                         .font(.headline)
@@ -133,26 +143,73 @@ struct AIView: View {
                         .padding(.top, 20)
                 }
                 .padding()
-                
+
                 Spacer()
             }
         }
-        .onReceive(timer) { _ in
+        .onDisappear {
+            // Ensure the timer is cancelled if the view disappears for any reason
             if self.timerCount > 0 {
-                self.timerCount -= 1
-            } else {
-                self.timer.upstream.connect().cancel() // Ensure to stop the timer to prevent further decrements
-                // Auto-trigger safety protocols here if necessary
-                self.isShowing = false // Optionally close the view after actions are taken
-            }
-        }
-        .onChange(of: isSafe) { newValue in
-            if newValue {
-                // Handle additional actions if the user confirms they are safe
+                self.timerCount = 0  // Reset timer count to stop the countdown
             }
         }
     }
+
+    private func isSafe() {
+         // Function to handle when user declares they are safe
+        isShowing = false  // Close this view
+        speechDetector.stopSirenSound()
+    }
+
+
+// To preview AIView with a static binding in the preview provider:
+struct AIView_Previews: PreviewProvider {
+    static var previews: some View {
+        AIView(isShowing: .constant(true), speechDetector: SpeechDetector(), detectedPhrase: "Help")
+    }
 }
+
+    @ViewBuilder
+    private func SOSCompleteView() -> some View {
+        Circle()
+            .fill(Color.white.opacity(0.8))
+            .frame(width: 120, height: 120)
+            .overlay(
+                Image(systemName: "bell.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(.red)
+            )
+        Text("Sending SOS message...")
+            .font(.headline)
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+            .padding()
+        Text("Notifying your emergency contacts for your AI-detected situation.")
+            .font(.subheadline)
+            .foregroundColor(.white)
+            .padding()
+            .multilineTextAlignment(.center)
+    }
+}
+
+
+
+struct TimerView: View {
+    @Binding var timerCount: Int
+    let timer = Timer.publish(every: 1, on: .main, in: .default).autoconnect()
+
+    var body: some View {
+        Text("\(timerCount)")
+            .onReceive(timer) { _ in
+                if self.timerCount > 0 {
+                    self.timerCount -= 1
+                }
+            }
+    }
+}
+
 
 struct CompanionView: View {
     var body: some View {
