@@ -37,18 +37,8 @@ struct FriendsView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     ForEach(contacts, id: \.id) { contact in
-                        ContactRow(contact: contact, removeAction: { contactId in
-                            NetworkManager.shared.removeContactFromTrusted(userId: 1, contactId: contactId) { result in
-                                switch result {
-                                case .success(_):
-                                    print("Contact removed successfully")
-                                    self.fetchContacts()
-                                case .failure(let error):
-                                    print("Error removing contact: \(error.localizedDescription)")
-                                }
-                            }
-                        })
-                    }
+                                            ContactRow(contact: contact, removeAction: removeContactFromTrusted)
+                                        }
                 }
                 .padding(.horizontal, 20)
             }
@@ -85,11 +75,29 @@ struct FriendsView: View {
             }
         }
     }
+    
+    private func removeContactFromTrusted(contactId: Int) {
+            NetworkManager.shared.removeContactFromTrusted(userId: 1, contactId: contactId) { result in
+                switch result {
+                case .success(let isSuccess):
+                    if isSuccess {
+                        DispatchQueue.main.async {
+                            self.contacts.removeAll { $0.id == contactId }
+                        }
+                        print("Contact removed successfully")
+                    }
+                case .failure(let error):
+                    print("Error removing contact: \(error.localizedDescription)")
+                }
+            }
+        }
 }
 
 struct ContactRow: View {
     var contact: Contact
     var removeAction: (Int) -> Void
+    
+    @State private var showingConfirmation = false
     
     var body: some View {
         HStack {
@@ -119,12 +127,22 @@ struct ContactRow: View {
             Spacer()
             
             Button(action: {
-                            self.removeAction(contact.id)  // Call the removal action
+                showingConfirmation = true
                         }) {
                             Image(systemName: "trash.fill")
                                 .foregroundColor(.red)
                         }
             .padding(.trailing)
+            .alert(isPresented: $showingConfirmation) {
+                            Alert(
+                                title: Text("Remove Contact"),
+                                message: Text("Are you sure you want to remove \(contact.name) from your emergency contacts list?"),
+                                primaryButton: .destructive(Text("Remove")) {
+                                    removeAction(contact.id)
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
             
             Button(action: {
                 // Placeholder for a call action

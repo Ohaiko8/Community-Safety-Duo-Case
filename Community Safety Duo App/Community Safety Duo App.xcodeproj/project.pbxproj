@@ -358,7 +358,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Community Safety Duo App/Preview Content\"";
-				DEVELOPMENT_TEAM = 4XW83F32HZ;
+				DEVELOPMENT_TEAM = RCTK93B467;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Community-Safety-Duo-App-Info.plist";
@@ -399,7 +399,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Community Safety Duo App/Preview Content\"";
-				DEVELOPMENT_TEAM = 4XW83F32HZ;
+				DEVELOPMENT_TEAM = RCTK93B467;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Community-Safety-Duo-App-Info.plist";

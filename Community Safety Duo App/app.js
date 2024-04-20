@@ -219,39 +219,30 @@ app.post('/users/updateTrustedContacts', async (req, res) => {
 });
 
 // Route to remove a trusted contact
-app.patch('/users/:userId/remove-trusted', async (req, res) => {
-    const { userId } = req.params;
-    const { contactId } = req.body;
+// Route to remove a contact from the trusted_ids list for a user
+app.post('/users/remove-trusted-contact', async (req, res) => {
+    const { userId, contactId } = req.body;
 
     try {
-        const user = await pool.query(
-            'SELECT trusted_ids FROM users WHERE id = $1', [userId]
-        );
-        const user2 = await pool.query(
-            'SELECT trusted_ids FROM users WHERE id = $1', [contactId]
-        );
-        if (user.rows.length === 0) {
-            return res.status(404).send('User not found');
-        }
-
-        let trustedIds = user.rows[0].trusted_ids.filter(id => id !== contactId);
-        let trustedIds2 = user2.rows[0].trusted_ids.filter(id => id !== contactId);
-        const update = await pool.query(
-            'UPDATE users SET trusted_ids = $1 WHERE id = $2 RETURNING *',
-            [trustedIds, userId]
-        );
-        const update2 = await pool.query(
-            'UPDATE users SET trusted_ids = $1 WHERE id = $2 RETURNING *',
-            [trustedIds2, contactId]
+        // Remove contactId from userId's trusted_ids
+        await pool.query(
+            'UPDATE users SET trusted_ids = array_remove(trusted_ids, $1) WHERE id = $2',
+            [contactId, userId]
         );
 
-        res.json(update.rows[0]);
-        res.json(update2.rows[0]);
+        // Also, remove userId from contactId's trusted_ids
+        await pool.query(
+            'UPDATE users SET trusted_ids = array_remove(trusted_ids, $1) WHERE id = $2',
+            [userId, contactId]
+        );
+
+        res.status(200).json({ message: "Trusted contact removed successfully" });
     } catch (err) {
-        console.error(err);
+        console.error('Error removing trusted contact:', err);
         res.status(500).send('Server error');
     }
 });
+
 
 
 // Start the server

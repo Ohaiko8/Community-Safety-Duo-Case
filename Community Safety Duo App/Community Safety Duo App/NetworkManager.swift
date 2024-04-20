@@ -187,24 +187,29 @@ class NetworkManager {
     }
     
     func removeContactFromTrusted(userId: Int, contactId: Int, completion: @escaping (Result<Bool, Error>) -> Void) {
-        let url = URL(string: "\(baseURL)/users/\(userId)/remove-trusted")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "PATCH"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        let body: [String: Any] = ["contactId": contactId]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
+            let url = URL(string: "\(baseURL)/users/remove-trusted-contact")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            let body: [String: Any] = [
+                "userId": userId,
+                "contactId": contactId
+            ]
+            request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(NSError(domain: "NetworkError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No valid HTTP response"])))
-                return
-            }
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      httpResponse.statusCode == 200 else {
+                    completion(.failure(NSError(domain: "NetworkError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to remove trusted contact"])))
+                    return
+                }
 
-            if httpResponse.statusCode == 200 {
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
                 completion(.success(true))
-            } else {
-                completion(.failure(NSError(domain: "NetworkError", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to remove contact"])))
-            }
-        }.resume()
-    }
+            }.resume()
+        }
 }
