@@ -1,9 +1,12 @@
 import SwiftUI
+import AVFAudio
+
 struct SOSView: View {
     @State private var timerCount = 10
     @State private var isSafe = false
     @State private var displayMessage = false
     @State private var selectedMessage: String?
+    @Environment(\.presentationMode) var presentationMode
     
     let timer = Timer.publish(every: 1, on: .main, in: .default).autoconnect()
     
@@ -78,7 +81,8 @@ struct SOSView: View {
                 Spacer()
                 
                 Button(action: {
-                    self.isSafe.toggle()
+                    stopSirenSound()
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("I am safe!")
                         .font(.headline)
@@ -90,15 +94,44 @@ struct SOSView: View {
                 }
             }
         }
+        .onAppear(){
+            playSirenSound()
+        }
         .onReceive(timer) { _ in
             if self.timerCount > 0 {
                 self.timerCount -= 1
             }
         }
+        .onDisappear {
+                    stopSirenSound()
+                }
         .sheet(isPresented: $isSafe) {
             HomeView()
         }
     }
+}
+
+private var audioPlayer: AVAudioPlayer?
+func playSirenSound() {
+    
+    guard let url = Bundle.main.url(forResource: "siren", withExtension: "mp3") else {
+        print("Siren sound file not found.")
+        return
+    }
+
+    do {
+        audioPlayer = try AVAudioPlayer(contentsOf: url)
+        audioPlayer?.prepareToPlay()
+        audioPlayer?.numberOfLoops = -1  // Loop indefinitely
+        audioPlayer?.play()
+    } catch {
+        print("Could not load or play the siren sound file: \(error)")
+    }
+}
+
+
+func stopSirenSound() {
+    audioPlayer?.stop()
 }
 
 struct EmergencyMessageView: View {

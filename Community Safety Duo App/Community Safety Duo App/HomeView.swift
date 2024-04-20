@@ -42,9 +42,8 @@ struct HomeView: View {
                     .padding()
                     .background(Color.skyBlue)
                     .cornerRadius(10)
-                    .offset(x: 0, y: -120)
                 }
-                .padding(.top, -50)
+                .padding(.top, -150)
             }
             .padding()
             
