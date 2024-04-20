@@ -53,7 +53,7 @@ struct HomeView: View {
         .padding()
         
         .onAppear {
-            addUser()
+            //addUser()
                     }
                     .onChange(of: speechDetector.dangerDetected) { detected in
                         showAIView = detected
@@ -62,24 +62,26 @@ struct HomeView: View {
 }
 
 func addUser() {
-        guard let imageData = UIImage(named: "p1")?.jpegData(compressionQuality: 0.5) else {
-            print("Failed to load image")
-            return
-        }
-        
-        NetworkManager.shared.addUser(name: "John Smith", phone: "+31612345678", trustedIds: [2, 3, 4], profilePicture: imageData) { result in
-            switch result {
-            case .success(let user):
-                DispatchQueue.main.async {
-                    print("User \(user.name) added successfully!")
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    print("Failed to add user: \(error.localizedDescription)")
-                }
+    let imageName = "p3" // Assuming you store the filename in the assets
+    let trustedIds = [1, 2, 4]
+    let name = "Alina"
+    let phone = "+333333333"
+
+    // This function now passes the image name directly instead of converting it to data
+    NetworkManager.shared.addUser(name: name, phone: phone, trustedIds: trustedIds, profilePicture: imageName) { result in
+        switch result {
+        case .success(let user):
+            DispatchQueue.main.async {
+                print("User \(user.name) added successfully!")
+            }
+        case .failure(let error):
+            DispatchQueue.main.async {
+                print("Failed to add user: \(error.localizedDescription)")
             }
         }
     }
+}
+
 
 
 struct HomeView_Previews: PreviewProvider {
