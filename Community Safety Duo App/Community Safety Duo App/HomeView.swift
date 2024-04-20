@@ -53,7 +53,7 @@ struct HomeView: View {
         .padding()
         
         .onAppear {
-            addUserToDatabase()
+            addUser()
                     }
                     .onChange(of: speechDetector.dangerDetected) { detected in
                         showAIView = detected
@@ -61,37 +61,25 @@ struct HomeView: View {
     }
 }
 
-private func addUserToDatabase() {
-        guard let url = URL(string: "https://your-backend-url.com/users") else { return }
-        let profilePicture = UIImage(named: "p1.jpeg")?.jpegData(compressionQuality: 0.5)
-        let base64Picture = profilePicture?.base64EncodedString() ?? ""
+func addUser() {
+        guard let imageData = UIImage(named: "p1")?.jpegData(compressionQuality: 0.5) else {
+            print("Failed to load image")
+            return
+        }
         
-        let user = User(name: "John Smith", phone: "+31612345678", trustedIds: [2, 3, 4], profilePicture: base64Picture)
-        
-        guard let encodedUser = try? JSONEncoder().encode(user) else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = encodedUser
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Failed to add user: \(error)")
-                return
+        NetworkManager.shared.addUser(name: "John Smith", phone: "+31612345678", trustedIds: [2, 3, 4], profilePicture: imageData) { result in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    print("User \(user.name) added successfully!")
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    print("Failed to add user: \(error.localizedDescription)")
+                }
             }
-            if let data = data, let responseString = String(data: data, encoding: .utf8) {
-                print("Response: \(responseString)")
-            }
-        }.resume()
+        }
     }
-
-struct User: Codable {
-    var name: String
-    var phone: String
-    var trustedIds: [Int]
-    var profilePicture: String
-}
 
 
 struct HomeView_Previews: PreviewProvider {

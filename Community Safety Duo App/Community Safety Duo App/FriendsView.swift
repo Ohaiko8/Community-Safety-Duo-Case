@@ -1,12 +1,7 @@
 import SwiftUI
 
 struct FriendsView: View {
-    @State private var contacts = [
-        Contact(name: "Jane Doe", phoneNumber: "+1234567890"),
-        Contact(name: "Alex Smith", phoneNumber: "+0987654321"),
-        Contact(name: "Emily Johnson", phoneNumber: "+1122334455"),
-        Contact(name: "Michael Brown", phoneNumber: "+3344556677")
-    ]
+    @State private var contacts: [Contact] = []
     @State private var isAddingContact = false
     
     var body: some View {
@@ -49,8 +44,23 @@ struct FriendsView: View {
             }
         }
         .padding(.top, 20)
-        .sheet(isPresented: $isAddingContact) { // Present the AddContactForm when isAddingContact is true
+        .onAppear {
+            fetchContacts()
+        }
+        .sheet(isPresented: $isAddingContact) {
             AddContactForm(isPresented: self.$isAddingContact, contacts: self.$contacts)
+        }
+    }
+    func fetchContacts() {
+        NetworkManager.shared.fetchUsers { result in
+            switch result {
+            case .success(let users):
+                DispatchQueue.main.async {
+                    self.contacts = users
+                }
+            case .failure(let error):
+                print("Failed to fetch users: \(error)")
+            }
         }
     }
 }
@@ -100,12 +110,6 @@ struct ContactRow: View {
         .background(Color.white)
         .cornerRadius(8)
     }
-}
-
-struct Contact: Identifiable {
-    let id = UUID()
-    var name: String
-    var phoneNumber: String
 }
 
 struct AddContactForm: View {
@@ -182,6 +186,6 @@ struct AddContactForm: View {
     
     func addContact() {
         let newContact = Contact(name: name, phoneNumber: phoneNumber)
-        contacts.append(newContact)
+       
     }
 }
