@@ -13,6 +13,8 @@ struct HomeView: View {
     ]
     
     @State private var currentMessageIndex = 0
+    @State private var timer: Timer.TimerPublisher = Timer.publish(every: 10, on: .main, in: .common)
+
     
     var body: some View {
         NavigationView {
@@ -26,7 +28,11 @@ struct HomeView: View {
                     
                     VStack {
                         BubbleView(content: safeCompanionMessages[currentMessageIndex])
-                    }
+                                                    .onTapGesture {
+                                                        changeMessage()
+                                                    }
+                                                    .transition(.opacity)
+                                            }
                     .offset(x: 0, y: -140)
                 }
                 
@@ -49,12 +55,22 @@ struct HomeView: View {
             
             .onAppear {
                 //addUser()
+                timer = Timer.publish(every: 10, on: .main, in: .common)
+                timer.connect()
             }
+            .onReceive(timer) { _ in
+                        changeMessage()
+                    }
             .sheet(isPresented: $showStartTrackingView) {
                 StartTrackingView()
             }
         }
     }
+    func changeMessage() {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                currentMessageIndex = (currentMessageIndex + 1) % safeCompanionMessages.count
+            }
+        }
 }
 
 func addUser() {
@@ -77,6 +93,8 @@ func addUser() {
         }
     }
 }
+
+
 
 
 
