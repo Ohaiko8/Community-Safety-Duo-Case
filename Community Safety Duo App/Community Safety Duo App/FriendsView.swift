@@ -145,7 +145,10 @@ struct ContactRow: View {
                         }
             
             Button(action: {
-                // Placeholder for a call action
+                let phone = contact.phone
+                    if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
             }) {
                 Image(systemName: "phone.fill")
                     .foregroundColor(.green)
