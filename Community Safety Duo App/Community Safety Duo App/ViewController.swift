@@ -7,6 +7,7 @@ extension Color {
 
 struct ViewController: View {
     @State private var showingSettings = false
+    @State private var showingFakeCall = false
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -38,13 +39,29 @@ struct ViewController: View {
             VStack {
                 HStack {
                     Button(action: {
+                        showingFakeCall.toggle()
+                    }) {
+                        Image(systemName: "phone.fill")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(Color(red: 1, green: 99/255, blue: 71/255))
+                            .padding(15)  // Adds padding around the image to increase tap area
+                    }
+                    .background(Color.clear)  // Ensures the padding also acts as a tappable area
+                    .clipShape(Circle())  // Clips the clickable area to a circle around the content
+                    .offset(x: 24)
+                                    Spacer()
+                    Button(action: {
                         showingSettings.toggle()
                     }) {
                         Image(systemName: "gear")
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(Color(red: 4/255, green: 207/255, blue: 252/255))
+                            .padding(15)
                     }
+                    .background(Color.clear)  // Ensures the padding also acts as a tappable area
+                    .clipShape(Circle())  // Clips the clickable area to a circle around the content
                     .offset(x: -10) // Move the button to the left
                 }
                 Spacer()
@@ -52,12 +69,16 @@ struct ViewController: View {
             .padding(.top, 10) // Adjusted to move the button downwards
             .padding(.trailing, 20)
         }
+        .sheet(isPresented: $showingFakeCall) {
+                    FakeCallView()
+                }
         .sheet(isPresented: $showingSettings) {
             NavigationView {
                 SettingsView()
             }
             .edgesIgnoringSafeArea(.all) // To remove shadow
         }
+        
     }
 }
 

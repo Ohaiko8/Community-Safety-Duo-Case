@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var showStartTrackingView = false // Controls visibility
+    
     let safeCompanionMessages = [
         "Remember, you can always press the SOS button if you're in trouble.",
         "Did you know you can activate Auto SOS by allowing AI access to your microphone in Settings?",
