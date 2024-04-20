@@ -1,10 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject private var speechDetector = SpeechDetector() // Speech detection
-    @State private var showAIView = false // Controls visibility of AIView
-    @State private var showStartTrackingView = false // Controls visibility of StartTrackingView
-
+    @State private var showStartTrackingView = false // Controls visibility
     let safeCompanionMessages = [
         "Remember, you can always press the SOS button if you're in trouble.",
         "Did you know you can activate Auto SOS by allowing AI access to your microphone in Settings?",
@@ -48,19 +45,11 @@ struct HomeView: View {
                     .offset(x: 0, y: -120)
                 }
                 .padding(.top, -50)
-                
-                NavigationLink(
-                    destination: AIView(isShowing: $showAIView, speechDetector: speechDetector, detectedPhrase: speechDetector.lastDetectedPhrase),
-                    isActive: $showAIView) {
-                        EmptyView()
-                }
             }
             .padding()
+            
             .onAppear {
                 //addUser()
-            }
-            .onChange(of: speechDetector.dangerDetected) { detected in
-                showAIView = detected
             }
             .sheet(isPresented: $showStartTrackingView) {
                 StartTrackingView()
@@ -74,7 +63,7 @@ func addUser() {
     let trustedIds = [3]
     let name = "Rebecca"
     let phone = "+444444444"
-
+    
     // This function now passes the image name directly instead of converting it to data
     NetworkManager.shared.addUser(name: name, phone: phone, trusted_ids: trustedIds, profile_picture: imageName) { result in
         switch result {
@@ -98,139 +87,14 @@ struct HomeView_Previews: PreviewProvider {
     }
 }
 
-struct AIView: View {
-    @Binding var isShowing: Bool
-    @State private var timerCount = 10
-    var speechDetector: SpeechDetector
-    let detectedPhrase: String
 
-    var body: some View {
-        ZStack {
-            Color.red.edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                Text("AI Detected")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding()
-
-                Text("You said: \"\(detectedPhrase)\"")
-                    .font(.title3)
-                    .foregroundColor(.white)
-                    .padding()
-
-                Text("Is everything ok?")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding()
-
-                if timerCount > 0 {
-                    Text("\(timerCount)")
-                        .font(.system(size: 50))
-                        .foregroundColor(.black)
-                        .padding(30)
-                        .background(Color.white.opacity(0.8))
-                        .clipShape(Circle())
-                        .padding(.top, 20)
-                        .onReceive(Timer.publish(every: 1, on: .main, in: .default).autoconnect()) { _ in
-                            if self.timerCount > 0 {
-                                self.timerCount -= 1
-                            }
-                        }
-                } else {
-                    Circle()
-                        .fill(Color.white.opacity(0.8))
-                        .frame(width: 120, height: 120)
-                        .overlay(
-                            Image(systemName: "bell.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 60, height: 60)
-                                .foregroundColor(.red)
-                        )
-                    Text("Sending SOS message...")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding()
-                    Text("Notifying your emergency contacts for your AI-detected situation.")
-                        .font(.subheadline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .multilineTextAlignment(.center)
-                }
-
-                Button(action: {
-                    isSafe()
-                }) {
-                    Text("I am safe")
-                        .font(.headline)
-                        .foregroundColor(.black)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(8)
-                        .padding(.top, 20)
-                }
-                .padding()
-
-                Spacer()
-            }
-        }
-        .onDisappear {
-            // Ensure the timer is cancelled if the view disappears for any reason
-            if self.timerCount > 0 {
-                self.timerCount = 0  // Reset timer count to stop the countdown
-            }
-        }
-    }
-
-    private func isSafe() {
-         // Function to handle when user declares they are safe
-        isShowing = false  // Close this view
-        speechDetector.stopSirenSound()
-    }
-
-
-// To preview AIView with a static binding in the preview provider:
-struct AIView_Previews: PreviewProvider {
-    static var previews: some View {
-        AIView(isShowing: .constant(true), speechDetector: SpeechDetector(), detectedPhrase: "Help")
-    }
-}
-
-    @ViewBuilder
-    private func SOSCompleteView() -> some View {
-        Circle()
-            .fill(Color.white.opacity(0.8))
-            .frame(width: 120, height: 120)
-            .overlay(
-                Image(systemName: "bell.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 60, height: 60)
-                    .foregroundColor(.red)
-            )
-        Text("Sending SOS message...")
-            .font(.headline)
-            .fontWeight(.bold)
-            .foregroundColor(.white)
-            .padding()
-        Text("Notifying your emergency contacts for your AI-detected situation.")
-            .font(.subheadline)
-            .foregroundColor(.white)
-            .padding()
-            .multilineTextAlignment(.center)
-    }
-}
 
 
 
 struct TimerView: View {
     @Binding var timerCount: Int
     let timer = Timer.publish(every: 1, on: .main, in: .default).autoconnect()
-
+    
     var body: some View {
         Text("\(timerCount)")
             .onReceive(timer) { _ in
@@ -267,12 +131,32 @@ struct BubbleView: View {
     }
 }
 
+struct ContentView: View {
+    @EnvironmentObject var appModel: AppModel
 
-@main
-struct AppName: App {
-        var body: some Scene {
-            WindowGroup {
-                ViewController()
+    var body: some View {
+        ZStack {
+            ViewController().environmentObject(appModel)  // Use ViewController as the main view
+
+            if appModel.showAIView {
+                AIView()  // Ensure AIView gets the AppModel
+                    .environmentObject(appModel)
+                    .zIndex(1)  // Make sure it covers other content
             }
         }
+    }
+}
+
+
+
+@main
+struct YourApp: App {
+    @StateObject private var appModel = AppModel()  // Initialize AppModel
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environmentObject(appModel)  // Pass AppModel to ContentView
+        }
+    }
 }

@@ -10,13 +10,16 @@ class SpeechDetector: ObservableObject {
     private var audioPlayer: AVAudioPlayer?
     
     // Published property to notify the UI
-    var isSirenPlaying = CurrentValueSubject<Bool, Never>(false)
+    @Published var isSirenPlaying = CurrentValueSubject<Bool, Never>(false)
     @Published var dangerDetected = false
-    @Published var lastDetectedPhrase = ""
-    
-    init() {
-        setupAudioSession()
-    }
+        @Published var lastDetectedPhrase = ""
+    weak var appModel: AppModel?
+
+        init(appModel: AppModel) {
+            self.appModel = appModel
+            setupAudioSession()
+        }
+
     
     func requestMicrophonePermission() {
             AVAudioSession.sharedInstance().requestRecordPermission { [weak self] granted in
@@ -104,6 +107,7 @@ class SpeechDetector: ObservableObject {
 
             if let result = result, self.checkForDangerousWords(in: result.bestTranscription.formattedString.lowercased()) {
                 DispatchQueue.main.async {
+                    self.appModel?.showAIView = true
                     self.dangerDetected = true
                     self.lastDetectedPhrase = result.bestTranscription.formattedString  // Store the detected phrase
                     self.playSirenSound()

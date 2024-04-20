@@ -7,54 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F3ADB9AD-2D43-4355-81F8-BC35DFC70036"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Community Safety Duo App/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
-            landmarkName = "body"
-            landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "F3ADB9AD-2D43-4355-81F8-BC35DFC70036 - 5d0f593faa9793f8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Community_Safety_Duo_App.AIView.isSafe() -&gt; ()"
-                  moduleName = "Community Safety Duo App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ohaiko8/Documents/GitHub/newcom/Untitled/Community%20Safety%20Duo%20App/Community%20Safety%20Duo%20App/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "161"
-                  endingLineNumber = "161"
-                  offsetFromSymbolStart = "32">
-               </Location>
-               <Location
-                  uuid = "F3ADB9AD-2D43-4355-81F8-BC35DFC70036 - 5d0f593faa9793be"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Community_Safety_Duo_App.AIView.isSafe() -&gt; ()"
-                  moduleName = "Community Safety Duo App"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ohaiko8/Documents/GitHub/newcom/Untitled/Community%20Safety%20Duo%20App/Community%20Safety%20Duo%20App/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "159"
-                  endingLineNumber = "159"
-                  offsetFromSymbolStart = "32">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "F015197D-17E6-47B2-8027-29DEBA78C157"
             shouldBeEnabled = "No"
             ignoreCount = "0"
