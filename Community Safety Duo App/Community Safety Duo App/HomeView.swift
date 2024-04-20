@@ -62,13 +62,13 @@ struct HomeView: View {
 }
 
 func addUser() {
-    let imageName = "p3" // Assuming you store the filename in the assets
-    let trustedIds = [1, 2, 4]
-    let name = "Alina"
-    let phone = "+333333333"
+    let imageName = "p4" // Assuming you store the filename in the assets
+    let trustedIds = [3]
+    let name = "Rebecca"
+    let phone = "+444444444"
 
     // This function now passes the image name directly instead of converting it to data
-    NetworkManager.shared.addUser(name: name, phone: phone, trustedIds: trustedIds, profilePicture: imageName) { result in
+    NetworkManager.shared.addUser(name: name, phone: phone, trusted_ids: trustedIds, profile_picture: imageName) { result in
         switch result {
         case .success(let user):
             DispatchQueue.main.async {

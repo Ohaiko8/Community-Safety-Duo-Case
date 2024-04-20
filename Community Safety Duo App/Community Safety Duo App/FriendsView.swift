@@ -36,8 +36,18 @@ struct FriendsView: View {
             
             ScrollView {
                 VStack(spacing: 16) {
-                    ForEach(contacts) { contact in
-                        ContactRow(contact: contact)
+                    ForEach(contacts, id: \.id) { contact in
+                        ContactRow(contact: contact, removeAction: { contactId in
+                            NetworkManager.shared.removeContactFromTrusted(userId: 1, contactId: contactId) { result in
+                                switch result {
+                                case .success(_):
+                                    print("Contact removed successfully")
+                                    self.fetchContacts()
+                                case .failure(let error):
+                                    print("Error removing contact: \(error.localizedDescription)")
+                                }
+                            }
+                        })
                     }
                 }
                 .padding(.horizontal, 20)
@@ -79,6 +89,7 @@ struct FriendsView: View {
 
 struct ContactRow: View {
     var contact: Contact
+    var removeAction: (Int) -> Void
     
     var body: some View {
         HStack {
@@ -108,6 +119,14 @@ struct ContactRow: View {
             Spacer()
             
             Button(action: {
+                            self.removeAction(contact.id)  // Call the removal action
+                        }) {
+                            Image(systemName: "trash.fill")
+                                .foregroundColor(.red)
+                        }
+            .padding(.trailing)
+            
+            Button(action: {
                 // Placeholder for a call action
             }) {
                 Image(systemName: "phone.fill")
@@ -133,6 +152,7 @@ struct AddContactForm: View {
     @Binding var contacts: [Contact]
     @State private var name = ""
     @State private var phoneNumber = ""
+    @State private var errorMessage: String? = nil
     
     var body: some View {
         VStack {
@@ -168,10 +188,16 @@ struct AddContactForm: View {
             
             Spacer()
             
+            // Error message positioned right above the Save Contact button
+            if let errorMessage = errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .padding()
+            }
+            
             Button(action: {
-                // Function to add a contact
+                self.errorMessage = nil
                 self.addContact()
-                self.isPresented = false
             }) {
                 Text("Save Contact")
                     .font(.headline)
@@ -187,12 +213,79 @@ struct AddContactForm: View {
     }
     
     func addContact() {
-        // Assuming a function that would add the contact
+        NetworkManager.shared.fetchUserByNameAndPhone(name: name, phone: phoneNumber) { result in
+            switch result {
+            case .success(let user):
+                NetworkManager.shared.getFirstUser { firstUserResult in
+                    switch firstUserResult {
+                    case .success(let firstUser):
+                        if firstUser.id == user.id {
+                            DispatchQueue.main.async {
+                                self.errorMessage = "Cannot add oneself as a trusted contact."
+                            }
+                            return
+                        }
+                        
+                        if firstUser.trusted_ids?.contains(user.id) ?? false {
+                            DispatchQueue.main.async {
+                                self.errorMessage = "This user is already in your trusted list."
+                            }
+                            return
+                        }
+                        
+                        NetworkManager.shared.updateFirstUserTrustedContacts(userId: firstUser.id, newContactId: user.id) { updateResult in
+                            switch updateResult {
+                            case .success(_):
+                                DispatchQueue.main.async {
+                                    self.fetchContacts() // Fetch all contacts again to update the view
+                                    self.errorMessage = nil
+                                    self.isPresented = false
+                                }
+                            case .failure(let updateError):
+                                DispatchQueue.main.async {
+                                    self.fetchContacts() // Fetch all contacts again to update the view
+                                    self.errorMessage = nil
+                                    self.isPresented = false
+                                }
+                            }
+                        }
+                    case .failure(let firstUserError):
+                        DispatchQueue.main.async {
+                            self.errorMessage = "Failed to fetch first user: \(firstUserError.localizedDescription)"
+                        }
+                    }
+                }
+            case .failure(_):
+                DispatchQueue.main.async {
+                    print(name);
+                    print(phoneNumber);
+                    self.errorMessage = "This user doesn't use our app yet."
+                }
+            }
+        }
     }
-}
-
-struct FriendsView_Previews: PreviewProvider {
-    static var previews: some View {
-        FriendsView()
+    func fetchContacts() {
+        NetworkManager.shared.fetchTrustedContacts(forUserId: 1) { result in
+            switch result {
+            case .success(let users):
+                DispatchQueue.main.async {
+                    self.contacts = users.map { user in
+                        Contact(
+                            id: user.id,
+                            name: user.name,
+                            phone: user.phone,
+                            trusted_ids: user.trusted_ids,
+                            profile_picture: user.profile_picture
+                        )
+                    }
+                    self.contacts.forEach { contact in
+                        print("User ID: \(contact.id), Name: \(contact.name), Phone: \(contact.phone), Trusted IDs: \(contact.trusted_ids ?? []), picture: \(contact.profile_picture)")
+                    }
+                }
+            case .failure(let error):
+                print("Failed to fetch users: \(error)")
+            }
+        }
     }
+    
 }
