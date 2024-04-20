@@ -23,6 +23,7 @@
 		11EE94A32BD3E3C8009D4301 /* p4.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 11EE94A22BD3E3C8009D4301 /* p4.jpeg */; };
 		34350EA82BD17E8200B3492D /* AIview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34350EA72BD17E8200B3492D /* AIview.swift */; };
 		34350EAC2BD1EBBD00B3492D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34350EAB2BD1EBBD00B3492D /* SettingsView.swift */; };
+		34350EB22BD403F800B3492D /* StartTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34350EB12BD403F800B3492D /* StartTrackingView.swift */; };
 		34782B3E2BCFE0C8001609B2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34782B3D2BCFE0C8001609B2 /* HomeView.swift */; };
 		34782B402BCFE0D8001609B2 /* SOSview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34782B3F2BCFE0D8001609B2 /* SOSview.swift */; };
 		34782B422BCFE0EC001609B2 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34782B412BCFE0EC001609B2 /* FriendsView.swift */; };
@@ -48,6 +49,7 @@
 		11EE94A22BD3E3C8009D4301 /* p4.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = p4.jpeg; sourceTree = "<group>"; };
 		34350EA72BD17E8200B3492D /* AIview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIview.swift; sourceTree = "<group>"; };
 		34350EAB2BD1EBBD00B3492D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		34350EB12BD403F800B3492D /* StartTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTrackingView.swift; sourceTree = "<group>"; };
 		34782B3D2BCFE0C8001609B2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		34782B3F2BCFE0D8001609B2 /* SOSview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOSview.swift; sourceTree = "<group>"; };
 		34782B412BCFE0EC001609B2 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				34782B3D2BCFE0C8001609B2 /* HomeView.swift */,
 				34782B412BCFE0EC001609B2 /* FriendsView.swift */,
 				34350EA72BD17E8200B3492D /* AIview.swift */,
+				34350EB12BD403F800B3492D /* StartTrackingView.swift */,
 				34782B3F2BCFE0D8001609B2 /* SOSview.swift */,
 				34782B432BCFE144001609B2 /* ViewController.swift */,
 				1130E7162BB5654D001B1FD8 /* Assets.xcassets */,
@@ -219,6 +222,7 @@
 				34782B402BCFE0D8001609B2 /* SOSview.swift in Sources */,
 				34782B442BCFE144001609B2 /* ViewController.swift in Sources */,
 				114BF1382BD3B08B00CCDFD7 /* User.swift in Sources */,
+				34350EB22BD403F800B3492D /* StartTrackingView.swift in Sources */,
 				34782B3E2BCFE0C8001609B2 /* HomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,7 +358,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Community Safety Duo App/Preview Content\"";
-				DEVELOPMENT_TEAM = RCTK93B467;
+				DEVELOPMENT_TEAM = 4XW83F32HZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Community-Safety-Duo-App-Info.plist";
@@ -395,7 +399,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Community Safety Duo App/Preview Content\"";
-				DEVELOPMENT_TEAM = RCTK93B467;
+				DEVELOPMENT_TEAM = 4XW83F32HZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Community-Safety-Duo-App-Info.plist";

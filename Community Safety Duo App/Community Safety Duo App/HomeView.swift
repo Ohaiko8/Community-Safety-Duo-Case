@@ -1,11 +1,10 @@
 import SwiftUI
 
 struct HomeView: View {
-    
     @StateObject private var speechDetector = SpeechDetector() // Speech detection
-        @State private var showAIView = false // Controls visibility of AIView
-    
-    
+    @State private var showAIView = false // Controls visibility of AIView
+    @State private var showStartTrackingView = false // Controls visibility of StartTrackingView
+
     let safeCompanionMessages = [
         "Remember, you can always press the SOS button if you're in trouble.",
         "Did you know you can activate Auto SOS by allowing AI access to your microphone in Settings?",
@@ -19,45 +18,54 @@ struct HomeView: View {
     @State private var currentMessageIndex = 0
     
     var body: some View {
-        VStack {
-            ZStack {
-                RadialGradient(gradient: Gradient(colors: [Color.skyBlue.opacity(0.3), Color.clear]), center: .center, startRadius: 0, endRadius: 150)
+        NavigationView {
+            VStack {
+                ZStack {
+                    RadialGradient(gradient: Gradient(colors: [Color.skyBlue.opacity(0.3), Color.clear]), center: .center, startRadius: 0, endRadius: 150)
+                    
+                    CompanionView()
+                        .padding()
+                        .offset(x: -10, y: 50)
+                    
+                    VStack {
+                        BubbleView(content: safeCompanionMessages[currentMessageIndex])
+                    }
+                    .offset(x: 0, y: -140)
+                }
                 
-                CompanionView()
+                Button(action: {
+                    showStartTrackingView = true
+                }) {
+                    HStack {
+                        Image(systemName: "location.fill")
+                            .foregroundColor(.white)
+                        Text("Start Live Tracking")
+                            .foregroundColor(.white)
+                    }
                     .padding()
-                    .offset(x: -10, y: 50)
+                    .background(Color.skyBlue)
+                    .cornerRadius(10)
+                    .offset(x: 0, y: -120)
+                }
+                .padding(.top, -50)
                 
-                VStack {
-                    BubbleView(content: safeCompanionMessages[currentMessageIndex])
+                NavigationLink(
+                    destination: AIView(isShowing: $showAIView, speechDetector: speechDetector, detectedPhrase: speechDetector.lastDetectedPhrase),
+                    isActive: $showAIView) {
+                        EmptyView()
                 }
-                .offset(x: 0, y: -140)
             }
-            
-            Button(action: {
-            }) {
-                HStack {
-                    Image(systemName: "location.fill")
-                        .foregroundColor(.white)
-                    Text("Start Live Tracking")
-                        .foregroundColor(.white)
-                }
-                .padding()
-                .background(Color.skyBlue)
-                .cornerRadius(10)
-                .offset(x: 0, y: -120)
+            .padding()
+            .onAppear {
+                //addUser()
             }
-            .padding(.top, -50)
-            NavigationLink(destination: AIView(isShowing: $showAIView, speechDetector: speechDetector, detectedPhrase: speechDetector.lastDetectedPhrase), isActive: $showAIView) {
-                    EmptyView()}
+            .onChange(of: speechDetector.dangerDetected) { detected in
+                showAIView = detected
+            }
+            .sheet(isPresented: $showStartTrackingView) {
+                StartTrackingView()
+            }
         }
-        .padding()
-        
-        .onAppear {
-            //addUser()
-                    }
-                    .onChange(of: speechDetector.dangerDetected) { detected in
-                        showAIView = detected
-                    }
     }
 }
 
