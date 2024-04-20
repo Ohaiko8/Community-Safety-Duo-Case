@@ -42,17 +42,14 @@ struct ViewController: View {
                     }) {
                         Image(systemName: "gear")
                             .resizable()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.gray)
-                            .cornerRadius(12)
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(Color(red: 4/255, green: 207/255, blue: 252/255))
                     }
                     .offset(x: -10) // Move the button to the left
                 }
                 Spacer()
             }
-            .padding(.top, 0) // Adjusted to move the button downwards
+            .padding(.top, 10) // Adjusted to move the button downwards
             .padding(.trailing, 20)
         }
         .sheet(isPresented: $showingSettings) {
