@@ -52,7 +52,7 @@ struct ViewController: View {
                 }
                 Spacer()
             }
-            .padding(.top, -20)
+            .padding(.top, 0) // Adjusted to move the button downwards
             .padding(.trailing, 20)
         }
         .sheet(isPresented: $showingSettings) {

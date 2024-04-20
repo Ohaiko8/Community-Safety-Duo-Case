@@ -362,6 +362,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Community-Safety-Duo-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Compi;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location is used for navigating in the safest way possible.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location is used for navigating in the safest way possible.";
 				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "Location is used for navigating in the safest way possible.";
@@ -403,6 +404,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Community-Safety-Duo-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Compi;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location is used for navigating in the safest way possible.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location is used for navigating in the safest way possible.";
 				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "Location is used for navigating in the safest way possible.";
