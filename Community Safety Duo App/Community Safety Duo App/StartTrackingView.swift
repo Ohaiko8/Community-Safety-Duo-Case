@@ -1,6 +1,9 @@
 import SwiftUI
+import MapKit
 
 struct StartTrackingView: View {
+    @State private var navigateToMap = false
+    
     enum ShareDuration: String, CaseIterable, Identifiable {
         case untilTurnedOff = "Until Turned Off"
         case untilDestination = "Until I Reach My Destination"
@@ -77,19 +80,17 @@ struct StartTrackingView: View {
                 // Continue Button
                 HStack {
                     Spacer()
-                    Button(action: {
-                        // go to map
-                    }) {
-                        HStack {
-                            Text("Continue")
-                            Image(systemName: "arrow.right")
-                        }
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color.skyBlue)
-                        .cornerRadius(8)
-                    }
-                    .padding()
+                    NavigationLink(destination: NavigationMapView(destination: destination)) {
+                                        HStack {
+                                            Text("Continue")
+                                            Image(systemName: "arrow.right")
+                                        }
+                                        .padding()
+                                        .foregroundColor(.white)
+                                        .background(Color.skyBlue)
+                                        .cornerRadius(8)
+                                    }
+                                    .padding()
                 }
                 
                 HStack {

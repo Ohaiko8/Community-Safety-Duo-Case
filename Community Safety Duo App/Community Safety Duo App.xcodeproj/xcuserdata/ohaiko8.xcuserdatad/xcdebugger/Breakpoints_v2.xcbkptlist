@@ -14,10 +14,10 @@
             filePath = "Community Safety Duo App/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "previews"
-            landmarkType = "24">
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "ViewController_Previews"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

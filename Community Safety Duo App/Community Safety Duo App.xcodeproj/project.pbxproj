@@ -18,6 +18,7 @@
 		114BF1382BD3B08B00CCDFD7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114BF1372BD3B08B00CCDFD7 /* User.swift */; };
 		114BF13A2BD3BD7400CCDFD7 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114BF1392BD3BD7400CCDFD7 /* Contact.swift */; };
 		114BF13C2BD3CF3400CCDFD7 /* p2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 114BF13B2BD3CF3400CCDFD7 /* p2.jpeg */; };
+		118E4B272BD5309200DE3E2C /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118E4B262BD5309200DE3E2C /* Navigation.swift */; };
 		11AE634C2BD481B2006AC241 /* FakeCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11AE634B2BD481B2006AC241 /* FakeCall.swift */; };
 		11AE634E2BD482D6006AC241 /* Ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 11AE634D2BD482D6006AC241 /* Ringtone.mp3 */; };
 		11EE949F2BD3D530009D4301 /* p3.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 11EE949E2BD3D530009D4301 /* p3.jpeg */; };
@@ -46,6 +47,7 @@
 		114BF1372BD3B08B00CCDFD7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		114BF1392BD3BD7400CCDFD7 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		114BF13B2BD3CF3400CCDFD7 /* p2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = p2.jpeg; sourceTree = "<group>"; };
+		118E4B262BD5309200DE3E2C /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		11AE634B2BD481B2006AC241 /* FakeCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCall.swift; sourceTree = "<group>"; };
 		11AE634D2BD482D6006AC241 /* Ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Ringtone.mp3; sourceTree = "<group>"; };
 		11EE949E2BD3D530009D4301 /* p3.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = p3.jpeg; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				34782B412BCFE0EC001609B2 /* FriendsView.swift */,
 				34350EA72BD17E8200B3492D /* AIview.swift */,
 				34350EB12BD403F800B3492D /* StartTrackingView.swift */,
+				118E4B262BD5309200DE3E2C /* Navigation.swift */,
 				34782B3F2BCFE0D8001609B2 /* SOSview.swift */,
 				34782B432BCFE144001609B2 /* ViewController.swift */,
 				11AE634B2BD481B2006AC241 /* FakeCall.swift */,
@@ -183,8 +186,6 @@
 			);
 			mainGroup = 1130E7062BB5654C001B1FD8;
 			packageReferences = (
-				114BF11F2BD2E42000CCDFD7 /* XCRemoteSwiftPackageReference "realm-swift" */,
-				114BF1262BD2E77900CCDFD7 /* XCRemoteSwiftPackageReference "mongo-swift-driver" */,
 			);
 			productRefGroup = 1130E7102BB5654C001B1FD8 /* Products */;
 			projectDirPath = "";
@@ -228,6 +229,7 @@
 				114BF13A2BD3BD7400CCDFD7 /* Contact.swift in Sources */,
 				34782B402BCFE0D8001609B2 /* SOSview.swift in Sources */,
 				34782B442BCFE144001609B2 /* ViewController.swift in Sources */,
+				118E4B272BD5309200DE3E2C /* Navigation.swift in Sources */,
 				114BF1382BD3B08B00CCDFD7 /* User.swift in Sources */,
 				34350EB22BD403F800B3492D /* StartTrackingView.swift in Sources */,
 				34782B3E2BCFE0C8001609B2 /* HomeView.swift in Sources */,
@@ -462,25 +464,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		114BF11F2BD2E42000CCDFD7 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		114BF1262BD2E77900CCDFD7 /* XCRemoteSwiftPackageReference "mongo-swift-driver" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mongodb/mongo-swift-driver";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 1130E7072BB5654C001B1FD8 /* Project object */;
 }

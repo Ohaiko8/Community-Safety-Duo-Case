@@ -45,11 +45,10 @@ struct ViewController: View {
                             .resizable()
                             .frame(width: 24, height: 24)
                             .foregroundColor(Color(red: 1, green: 99/255, blue: 71/255))
-                            .padding(15)  // Adds padding around the image to increase tap area
                     }
                     .background(Color.clear)  // Ensures the padding also acts as a tappable area
                     .clipShape(Circle())  // Clips the clickable area to a circle around the content
-                    .offset(x: 24)
+                    .offset(x: 30)
                                     Spacer()
                     Button(action: {
                         showingSettings.toggle()
@@ -58,7 +57,6 @@ struct ViewController: View {
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(Color(red: 4/255, green: 207/255, blue: 252/255))
-                            .padding(15)
                     }
                     .background(Color.clear)  // Ensures the padding also acts as a tappable area
                     .clipShape(Circle())  // Clips the clickable area to a circle around the content
