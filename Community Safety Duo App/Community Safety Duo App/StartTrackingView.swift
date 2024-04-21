@@ -80,7 +80,7 @@ struct StartTrackingView: View {
                 // Continue Button
                 HStack {
                     Spacer()
-                    NavigationLink(destination: NavigationMapView(destination: destination)) {
+                    NavigationLink(destination: NavigationMapView()) {
                                         HStack {
                                             Text("Continue")
                                             Image(systemName: "arrow.right")

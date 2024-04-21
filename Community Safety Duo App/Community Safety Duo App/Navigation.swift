@@ -2,43 +2,67 @@ import SwiftUI
 import MapKit
 
 struct NavigationMapView: View {
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 34.052235, longitude: -118.243683), // Default coordinates
+    @Environment(\.presentationMode) var presentationMode
+        @StateObject private var viewModel = SimpleMapViewModel()
+        @State private var userTrackingMode: MapUserTrackingMode = .follow
+
+        var body: some View {
+            ZStack(alignment: .bottom) {
+                Map(coordinateRegion: $viewModel.region,
+                    showsUserLocation: true,
+                    userTrackingMode: $userTrackingMode)
+                    .onAppear {
+                        viewModel.checkIfLocationServicesIsEnabled()
+                    }
+                    .edgesIgnoringSafeArea(.all)
+                
+                Button("Stop Tracking Location") {
+                    presentationMode.wrappedValue.dismiss()
+                }
+                .padding()
+                .foregroundColor(.white)
+                .background(Color.blue)
+                .cornerRadius(10)
+                .padding(.bottom, 20) // Ensure it's not too close to the edge of the screen
+            }
+        }
+}
+
+class SimpleMapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 34.052235, longitude: -118.243683), // Example coordinates (Los Angeles)
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     )
-    var destination: String
-    private let locationManager = CLLocationManager()
-
-    var body: some View {
-        Map(coordinateRegion: $region)
-            .onAppear {
-                setupLocationManager()
-                geocodeDestination()
-            }
-    }
-
-    private func setupLocationManager() {
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        updateRegionToCurrentLocation()
-    }
-
-    private func updateRegionToCurrentLocation() {
-        if let currentLocation = locationManager.location?.coordinate {
-            region = MKCoordinateRegion(
-                center: currentLocation,
-                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-            )
+    
+    private var locationManager = CLLocationManager()
+    
+    func checkIfLocationServicesIsEnabled() {
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+        } else {
+            // Handle the case where location services are not enabled
         }
     }
-
-    func geocodeDestination() {
-        let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(destination) { (placemarks, error) in
-            if let places = placemarks, let place = places.first, let location = place.location {
-                region.center = location.coordinate
-            }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let latestLocation = locations.first else { return }
+        region.center = latestLocation.coordinate
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+            case .notDetermined:
+                manager.requestWhenInUseAuthorization()
+            case .restricted:
+                print("restricted")
+            case .denied:
+            print("denied")            case .authorizedAlways, .authorizedWhenInUse:
+                manager.startUpdatingLocation()
+            @unknown default:
+                break
         }
     }
 }
-
