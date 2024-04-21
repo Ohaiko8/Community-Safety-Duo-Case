@@ -8,9 +8,9 @@ struct SettingsView: View {
     @State private var panicButtonAlertModeIndex = 0
     private let panicButtonAlertModes = ["Sound", "Vibrations", "Sound and Vibrations"]
     @State private var emergencySMSContent = "I need help!"
-
+    
     @Environment(\.presentationMode) var presentationMode
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             HStack {
@@ -39,20 +39,20 @@ struct SettingsView: View {
             SettingsRow(title: "AI AutoSOS",
                         explanation: "Allow AI to listen and send SOS",
                         isToggled: $autoSOSMicrophoneAccess)
-
+            
             SettingsRow(title: "Location Sharing ",
                         explanation: "Share your location when SOS is activated",
                         isToggled: $locationSharing)
-
+            
             SettingsRow(title: "Send SOS message",
                         explanation: "Automatically notify your emergency contacts via SMS",
                         isToggled: $sendSMSEmergencyContacts)
-
+            
             SettingsDropdownRow(title: "SOS Alert Preference",
                                 explanation: "Choose your preferred method of receiving alerts when the panic button is pressed.",
                                 selectedIndex: $panicButtonAlertModeIndex,
                                 options: panicButtonAlertModes)
-
+            
             Text("Customize your SOS message")
                 .font(.headline)
                 .padding(.leading)
@@ -61,14 +61,14 @@ struct SettingsView: View {
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .padding(.leading)
-
+            
             TextField("Enter emergency SMS content", text: $emergencySMSContent)
                 .padding(10)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .frame(maxHeight: 100)
-
+            
             Spacer()
-
+            
             Button(action: {
                 // Action to save settings
                 presentationMode.wrappedValue.dismiss()
@@ -92,7 +92,7 @@ struct SettingsRow: View {
     var title: String
     var explanation: String
     @Binding var isToggled: Bool
-
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
@@ -120,7 +120,7 @@ struct SettingsDropdownRow: View {
     var explanation: String
     @Binding var selectedIndex: Int
     var options: [String]
-
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {

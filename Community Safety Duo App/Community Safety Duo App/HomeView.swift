@@ -15,7 +15,7 @@ struct HomeView: View {
     
     @State private var currentMessageIndex = 0
     @State private var timer: Timer.TimerPublisher = Timer.publish(every: 10, on: .main, in: .common)
-
+    
     
     var body: some View {
         NavigationView {
@@ -29,11 +29,11 @@ struct HomeView: View {
                     
                     VStack {
                         BubbleView(content: safeCompanionMessages[currentMessageIndex])
-                                                    .onTapGesture {
-                                                        changeMessage()
-                                                    }
-                                                    .transition(.opacity)
-                                            }
+                            .onTapGesture {
+                                changeMessage()
+                            }
+                            .transition(.opacity)
+                    }
                     .offset(x: 0, y: -140)
                 }
                 
@@ -60,18 +60,18 @@ struct HomeView: View {
                 timer.connect()
             }
             .onReceive(timer) { _ in
-                        changeMessage()
-                    }
+                changeMessage()
+            }
             .sheet(isPresented: $showStartTrackingView) {
                 StartTrackingView()
             }
         }
     }
     func changeMessage() {
-            withAnimation(.easeInOut(duration: 0.5)) {
-                currentMessageIndex = (currentMessageIndex + 1) % safeCompanionMessages.count
-            }
+        withAnimation(.easeInOut(duration: 0.5)) {
+            currentMessageIndex = (currentMessageIndex + 1) % safeCompanionMessages.count
         }
+    }
 }
 
 func addUser() {
@@ -151,13 +151,13 @@ struct BubbleView: View {
 
 struct ContentView: View {
     @EnvironmentObject var appModel: AppModel
-
+    
     var body: some View {
         ZStack {
             ViewController().environmentObject(appModel)  // Use ViewController as the main view
-
+            
             if appModel.showAIView {
-                AIView()  // Ensure AIView gets the AppModel
+                AIView() 
                     .environmentObject(appModel)
                     .zIndex(1)  // Make sure it covers other content
             }
@@ -170,7 +170,7 @@ struct ContentView: View {
 @main
 struct YourApp: App {
     @StateObject private var appModel = AppModel()  // Initialize AppModel
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

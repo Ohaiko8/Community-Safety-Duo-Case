@@ -12,59 +12,59 @@ class SpeechDetector: ObservableObject {
     // Published property to notify the UI
     @Published var isSirenPlaying = CurrentValueSubject<Bool, Never>(false)
     @Published var dangerDetected = false
-        @Published var lastDetectedPhrase = ""
+    @Published var lastDetectedPhrase = ""
     weak var appModel: AppModel?
-
-        init(appModel: AppModel) {
-            self.appModel = appModel
-            setupAudioSession()
-        }
-
+    
+    init(appModel: AppModel) {
+        self.appModel = appModel
+        setupAudioSession()
+    }
+    
     
     func requestMicrophonePermission() {
-            AVAudioSession.sharedInstance().requestRecordPermission { [weak self] granted in
-                DispatchQueue.main.async {
-                    if granted {
-                        print("Permission granted")
-                        self?.startPeriodicRecognition()
-                    } else {
-                        print("Permission denied")
-                    }
+        AVAudioSession.sharedInstance().requestRecordPermission { [weak self] granted in
+            DispatchQueue.main.async {
+                if granted {
+                    print("Permission granted")
+                    self?.startPeriodicRecognition()
+                } else {
+                    print("Permission denied")
                 }
             }
         }
+    }
     
     private func setupAudioSession() {
-            do {
-                let audioSession = AVAudioSession.sharedInstance()
-                try audioSession.setCategory(.playAndRecord, mode: .default, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
-                try audioSession.setActive(true)
-                NotificationCenter.default.addObserver(self, selector: #selector(handleAudioSessionInterruption), name: AVAudioSession.interruptionNotification, object: nil)
-                requestMicrophonePermission()
-            } catch {
-                print("Audio Session setup failed: \(error)")
-            }
+        do {
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(.playAndRecord, mode: .default, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
+            try audioSession.setActive(true)
+            NotificationCenter.default.addObserver(self, selector: #selector(handleAudioSessionInterruption), name: AVAudioSession.interruptionNotification, object: nil)
+            requestMicrophonePermission()
+        } catch {
+            print("Audio Session setup failed: \(error)")
         }
+    }
     
     // Handle audio session interruptions
     @objc private func handleAudioSessionInterruption(notification: Notification) {
-            guard let info = notification.userInfo,
-                  let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
-                  let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
-                return
-            }
-
-            if type == .began {
-                print("Audio session interruption began.")
-            } else if type == .ended {
-                if let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt,
-                   AVAudioSession.InterruptionOptions(rawValue: optionsValue).contains(.shouldResume) {
-                    // Restart the audio session after the interruption ends
-                    setupAudioSession()
-                    startPeriodicRecognition()
-                }
+        guard let info = notification.userInfo,
+              let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
+              let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+            return
+        }
+        
+        if type == .began {
+            print("Audio session interruption began.")
+        } else if type == .ended {
+            if let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt,
+               AVAudioSession.InterruptionOptions(rawValue: optionsValue).contains(.shouldResume) {
+                // Restart the audio session after the interruption ends
+                setupAudioSession()
+                startPeriodicRecognition()
             }
         }
+    }
     
     func startPeriodicRecognition() {
         let timer = Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(startRecording), userInfo: nil, repeats: true)
@@ -75,7 +75,7 @@ class SpeechDetector: ObservableObject {
         // Ensure the audio engine is not running and remove any previous tap
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: 0)
-
+        
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         
         let inputNode = audioEngine.inputNode
@@ -94,17 +94,17 @@ class SpeechDetector: ObservableObject {
         
         setupRecognitionTask()
     }
-
+    
     private func setupRecognitionTask() {
         recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest!) { [weak self] result, error in
             guard let self = self else { return }
-
+            
             if let error = error {
                 print("Speech recognition error: \(error.localizedDescription)")
                 self.cleanupAudioSession()  // Clean up immediately on error
                 return
             }
-
+            
             if let result = result, self.checkForDangerousWords(in: result.bestTranscription.formattedString.lowercased()) {
                 DispatchQueue.main.async {
                     self.appModel?.showAIView = true
@@ -115,15 +115,15 @@ class SpeechDetector: ObservableObject {
                 }
                 return  // Early return to avoid further processing
             }
-
+            
             // Check if the recognition result is final
             if result?.isFinal ?? false {
                 self.cleanupAudioSession()  // Clean up after the task completes
             }
         }
     }
-
-
+    
+    
     
     
     
@@ -151,7 +151,7 @@ class SpeechDetector: ObservableObject {
             print("Siren sound file not found.")
             return
         }
-
+        
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.prepareToPlay()
@@ -162,11 +162,11 @@ class SpeechDetector: ObservableObject {
             print("Could not load or play the siren sound file: \(error)")
         }
     }
-
+    
     
     func stopSirenSound() {
-            cleanupAudioSession()
-            startPeriodicRecognition()
+        cleanupAudioSession()
+        startPeriodicRecognition()
     }
     
 }

@@ -46,10 +46,10 @@ struct ViewController: View {
                             .frame(width: 24, height: 24)
                             .foregroundColor(Color(red: 1, green: 99/255, blue: 71/255))
                     }
-                    .background(Color.clear)  // Ensures the padding also acts as a tappable area
-                    .clipShape(Circle())  // Clips the clickable area to a circle around the content
+                    .background(Color.clear)
+                    .clipShape(Circle())
                     .offset(x: 30)
-                                    Spacer()
+                    Spacer()
                     Button(action: {
                         showingSettings.toggle()
                     }) {
@@ -58,23 +58,23 @@ struct ViewController: View {
                             .frame(width: 30, height: 30)
                             .foregroundColor(Color(red: 4/255, green: 207/255, blue: 252/255))
                     }
-                    .background(Color.clear)  // Ensures the padding also acts as a tappable area
-                    .clipShape(Circle())  // Clips the clickable area to a circle around the content
-                    .offset(x: -10) // Move the button to the left
+                    .background(Color.clear)
+                    .clipShape(Circle())
+                    .offset(x: -10)
                 }
                 Spacer()
             }
-            .padding(.top, 10) // Adjusted to move the button downwards
+            .padding(.top, 10)
             .padding(.trailing, 20)
         }
         .sheet(isPresented: $showingFakeCall) {
-                    FakeCallView()
-                }
+            FakeCallView()
+        }
         .sheet(isPresented: $showingSettings) {
             NavigationView {
                 SettingsView()
             }
-            .edgesIgnoringSafeArea(.all) // To remove shadow
+            .edgesIgnoringSafeArea(.all)
         }
         
     }

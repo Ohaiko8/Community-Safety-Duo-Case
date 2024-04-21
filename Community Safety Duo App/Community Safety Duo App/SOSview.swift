@@ -103,8 +103,8 @@ struct SOSView: View {
             }
         }
         .onDisappear {
-                    stopSirenSound()
-                }
+            stopSirenSound()
+        }
         .sheet(isPresented: $isSafe) {
             HomeView()
         }
@@ -118,7 +118,7 @@ func playSirenSound() {
         print("Siren sound file not found.")
         return
     }
-
+    
     do {
         audioPlayer = try AVAudioPlayer(contentsOf: url)
         audioPlayer?.prepareToPlay()

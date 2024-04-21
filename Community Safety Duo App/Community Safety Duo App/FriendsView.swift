@@ -37,8 +37,8 @@ struct FriendsView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     ForEach(contacts, id: \.id) { contact in
-                                            ContactRow(contact: contact, removeAction: removeContactFromTrusted)
-                                        }
+                        ContactRow(contact: contact, removeAction: removeContactFromTrusted)
+                    }
                 }
                 .padding(.horizontal, 20)
             }
@@ -77,20 +77,20 @@ struct FriendsView: View {
     }
     
     private func removeContactFromTrusted(contactId: Int) {
-            NetworkManager.shared.removeContactFromTrusted(userId: 1, contactId: contactId) { result in
-                switch result {
-                case .success(let isSuccess):
-                    if isSuccess {
-                        DispatchQueue.main.async {
-                            self.contacts.removeAll { $0.id == contactId }
-                        }
-                        print("Contact removed successfully")
+        NetworkManager.shared.removeContactFromTrusted(userId: 1, contactId: contactId) { result in
+            switch result {
+            case .success(let isSuccess):
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.contacts.removeAll { $0.id == contactId }
                     }
-                case .failure(let error):
-                    print("Error removing contact: \(error.localizedDescription)")
+                    print("Contact removed successfully")
                 }
+            case .failure(let error):
+                print("Error removing contact: \(error.localizedDescription)")
             }
         }
+    }
 }
 
 struct ContactRow: View {
@@ -128,27 +128,27 @@ struct ContactRow: View {
             
             Button(action: {
                 showingConfirmation = true
-                        }) {
-                            Image(systemName: "trash.fill")
-                                .foregroundColor(.red)
-                        }
+            }) {
+                Image(systemName: "trash.fill")
+                    .foregroundColor(.red)
+            }
             .padding(.trailing)
             .alert(isPresented: $showingConfirmation) {
-                            Alert(
-                                title: Text("Remove Contact"),
-                                message: Text("Are you sure you want to remove \(contact.name) from your emergency contacts list?"),
-                                primaryButton: .destructive(Text("Remove")) {
-                                    removeAction(contact.id)
-                                },
-                                secondaryButton: .cancel()
-                            )
-                        }
+                Alert(
+                    title: Text("Remove Contact"),
+                    message: Text("Are you sure you want to remove \(contact.name) from your emergency contacts list?"),
+                    primaryButton: .destructive(Text("Remove")) {
+                        removeAction(contact.id)
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
             
             Button(action: {
                 let phone = contact.phone
-                    if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
-                        UIApplication.shared.open(url)
-                    }
+                if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
             }) {
                 Image(systemName: "phone.fill")
                     .foregroundColor(.green)
@@ -156,7 +156,6 @@ struct ContactRow: View {
             .padding(.trailing)
             
             Button(action: {
-                // Placeholder for location sharing action
             }) {
                 Image(systemName: "location.fill")
                     .foregroundColor(.blue)

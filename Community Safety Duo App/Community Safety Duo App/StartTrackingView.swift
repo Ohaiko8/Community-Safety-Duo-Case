@@ -81,16 +81,16 @@ struct StartTrackingView: View {
                 HStack {
                     Spacer()
                     NavigationLink(destination: NavigationMapView()) {
-                                        HStack {
-                                            Text("Continue")
-                                            Image(systemName: "arrow.right")
-                                        }
-                                        .padding()
-                                        .foregroundColor(.white)
-                                        .background(Color.skyBlue)
-                                        .cornerRadius(8)
-                                    }
-                                    .padding()
+                        HStack {
+                            Text("Continue")
+                            Image(systemName: "arrow.right")
+                        }
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(Color.skyBlue)
+                        .cornerRadius(8)
+                    }
+                    .padding()
                 }
                 
                 HStack {
